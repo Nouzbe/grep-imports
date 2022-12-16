@@ -2,8 +2,8 @@
   "name": "grep-imports",
   "version": "0.0.1",
   "description": "NodeJS utility allowing to grep all named imports from a chosen library",
-  "main": "bin.js",
   "type": "module",
+  "bin": "bin.js",
   "scripts": {
     "test": "yarn test"
   },

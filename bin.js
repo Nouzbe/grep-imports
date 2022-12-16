@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 
@@ -23,6 +24,7 @@ void yargs(hideBin(process.argv))
       });
     },
     ({ dependency, extensions, output }) => {
+      // /import (.+?) from "@activeviam\/activeui-sdk";/gms
       console.log(
         "hello world!",
         JSON.stringify({ dependency, extensions, output }, undefined, 2)
