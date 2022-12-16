@@ -1,0 +1,19 @@
+{
+  "name": "grep-imports",
+  "version": "0.0.1",
+  "description": "NodeJS utility allowing to grep all named imports from a chosen library",
+  "main": "index.js",
+  "scripts": {
+    "test": "yarn test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nouzbe/grep-imports.git"
+  },
+  "author": "Nouzbe",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nouzbe/grep-imports/issues"
+  },
+  "homepage": "https://github.com/Nouzbe/grep-imports#readme"
+}
