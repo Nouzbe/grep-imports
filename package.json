@@ -2,7 +2,6 @@
   "name": "grep-imports",
   "version": "0.0.1",
   "description": "NodeJS utility allowing to grep all named imports from a chosen library",
-  "type": "module",
   "bin": "bin.js",
   "scripts": {
     "test": "yarn test"
@@ -18,6 +17,7 @@
   },
   "homepage": "https://github.com/Nouzbe/grep-imports#readme",
   "dependencies": {
+    "fs-extra": "^11.1.0",
     "yargs": "^17.6.2"
   }
 }
