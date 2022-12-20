@@ -1,6 +1,6 @@
 {
   "name": "grep-imports",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "NodeJS utility allowing to grep all named imports from a chosen library",
   "bin": "./bin.js",
   "repository": {
