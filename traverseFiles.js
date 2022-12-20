@@ -3,9 +3,15 @@ const { readdir, stat, readFile } = require("fs-extra");
 
 /**
  * Traverses all files matching `extensions` recursively from the current directory.
- * Invokes `callback` for each of them.
+ * Invokes `onFileDiscovered` and `onFileRead` for each of them.
  */
-async function traverseFiles({ input, extensions, callback, exclude }) {
+async function traverseFiles({
+  input,
+  extensions,
+  onFileDiscovered,
+  onFileRead,
+  exclude,
+}) {
   const namesOfFilesAndSubfolders = (await readdir(input))
     .map((name) => path.join(input, name))
     .filter((name) => !exclude || !exclude.test(name));
@@ -29,8 +35,9 @@ async function traverseFiles({ input, extensions, callback, exclude }) {
         extensions.some((extension) => fileName.endsWith(extension))
       )
       .map(async (fileName) => {
+        onFileDiscovered(fileName);
         const content = await readFile(fileName, "utf8");
-        callback({
+        onFileRead({
           path: input,
           fileName,
           content,
@@ -41,23 +48,12 @@ async function traverseFiles({ input, extensions, callback, exclude }) {
         input: subfolderName,
         extensions,
         exclude,
-        callback,
+        onFileDiscovered,
+        onFileRead,
       })
     ),
   ]);
 }
-
-traverseFiles({
-  input: "./",
-  extensions: ["js"],
-  callback: ({ path, fileName, content }) => {
-    console.log(
-      "callback invoked with ",
-      JSON.stringify({ path, fileName, content }, undefined, 2)
-    );
-  },
-  exclude: new RegExp("node_modules"),
-});
 
 module.exports = {
   traverseFiles,
