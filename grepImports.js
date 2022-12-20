@@ -1,3 +1,5 @@
+const cliProgress = require("cli-progress");
+const colors = require("ansi-colors");
 const { traverseFiles } = require("./traverseFiles");
 
 /**
@@ -5,6 +7,21 @@ const { traverseFiles } = require("./traverseFiles");
  * Greps imports of `dependency` and returns them.
  */
 async function grepImports({ dependency, extensions, exclude }) {
+  let numberOfFilesDiscovered = 0;
+  let numberOfFilesProcessed = 0;
+
+  const progressBar = new cliProgress.SingleBar({
+    format:
+      "Progress |" +
+      colors.cyan("{bar}") +
+      "| {percentage}% || {value}/{total} files",
+    barCompleteChar: "\u2588",
+    barIncompleteChar: "\u2591",
+    hideCursor: true,
+  });
+
+  progressBar.start(0, 0);
+
   const imports = {};
   const regExp = new RegExp(
     `(?<=import)(((?!import).)*)(?=from "${dependency}")`,
@@ -14,10 +31,11 @@ async function grepImports({ dependency, extensions, exclude }) {
   await traverseFiles({
     input: "./",
     extensions,
-    onFileDiscovered: (path) => {
-      console.log(`Discovered file ${path}`);
+    onFileDiscovered: () => {
+      numberOfFilesDiscovered++;
+      progressBar.setTotal(numberOfFilesDiscovered);
     },
-    onFileRead: ({ path, fileName, content }) => {
+    onFileRead: ({ content }) => {
       const result = regExp.exec(content);
       if (result) {
         const importNames = result[1].replace(/\s|{|}/g, "").split(",");
@@ -29,9 +47,14 @@ async function grepImports({ dependency, extensions, exclude }) {
           imports[importName]++;
         });
       }
+
+      numberOfFilesProcessed++;
+      progressBar.update(numberOfFilesProcessed);
     },
     exclude: exclude ? new RegExp(exclude) : undefined,
   });
+
+  progressBar.stop();
 
   return imports;
 }

@@ -21,7 +21,7 @@ const argv = yargs(process.argv.slice(2))
       type: "array",
       default: ["js", "jsx", "ts", "tsx"],
     },
-    o: { alias: "output", type: "string", default: "output.csv" },
+    o: { alias: "output", type: "string", default: "imports.csv" },
     x: { alias: "exclude", type: "string", default: "node_modules" },
   }).argv;
 
